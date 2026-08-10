@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { brandDefinitionSchema } from "../../brands/schema";
 import { granistoneBrand } from "../../brands/granistone/brand.config";
+import { brand02 } from "../../brands/brand-02/brand.config";
 import { resolveLogoVariant } from "../brand-engine";
 import { rankTemplates, resolveFeedStoryVariant } from "../template-engine";
 import { structuredPostSchema } from "../content/content-schema";
@@ -16,6 +17,11 @@ const post: StructuredPost = {
 
 describe("Brand e Content Engine", () => {
   it("valida o Brand Kit demonstrativo", () => { expect(brandDefinitionSchema.safeParse(granistoneBrand).success).toBe(true); });
+  it("valida o Brand Kit Verti e seu template exclusivo", () => {
+    expect(brandDefinitionSchema.safeParse(brand02).success).toBe(true);
+    expect(brand02.name).toBe("Verti");
+    expect(getTemplate("brand-02", "verti-option-01")?.variants.story[0].layout).toBe("verti-option-01");
+  });
   it("resolve logo branca em fundo escuro", () => { expect(resolveLogoVariant({ brand: granistoneBrand, backgroundColor: "#171a18" }).variant).toBe("white"); });
   it("prioriza template compatível", () => { expect(rankTemplates({ brandId: "granistone", post, slide: post.slides[0] })[0].id).toMatch(/institutional/); });
   it("valida StructuredPost", () => { expect(structuredPostSchema.safeParse(post).success).toBe(true); });

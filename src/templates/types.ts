@@ -14,7 +14,7 @@ const variant = z.object({
   name: z.enum(["light", "dark", "image", "accent"]),
   output: z.enum(["feed", "story"]),
   background: z.enum(["light", "dark", "primary", "accent"]),
-  layout: z.enum(["split", "editorial", "centered", "numbered", "image-led", "cta"]),
+  layout: z.enum(["split", "editorial", "centered", "numbered", "image-led", "cta", "verti-option-01"]),
   requiresImage: z.boolean().optional(),
 });
 

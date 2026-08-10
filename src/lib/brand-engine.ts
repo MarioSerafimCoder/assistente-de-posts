@@ -25,6 +25,6 @@ export function resolveLogoVariant({
 export function getBrandFontFaceCss(brand: BrandDefinition): string {
   const definitions = [brand.typography.headline, brand.typography.body, brand.typography.cta].filter(Boolean);
   return definitions.flatMap((definition) => definition?.localSources?.map((source) =>
-    `@font-face{font-family:'${definition.family}';src:url('${source.path}') format('${source.path.endsWith(".woff2") ? "woff2" : "truetype"}');font-weight:${source.weight};font-style:${source.style ?? "normal"};font-display:swap;}`
+    `@font-face{font-family:'${definition.family}';src:url('${source.path}') format('${source.path.endsWith(".woff2") ? "woff2" : source.path.endsWith(".otf") ? "opentype" : "truetype"}');font-weight:${source.weight};font-style:${source.style ?? "normal"};font-display:swap;}`
   ) ?? []).join("");
 }

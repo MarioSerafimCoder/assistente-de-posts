@@ -33,7 +33,7 @@ export interface TemplateVariant {
   name: TemplateVariantName;
   output: SocialOutput;
   background: "light" | "dark" | "primary" | "accent";
-  layout: "split" | "editorial" | "centered" | "numbered" | "image-led" | "cta";
+  layout: "split" | "editorial" | "centered" | "numbered" | "image-led" | "cta" | "verti-option-01";
   requiresImage?: boolean;
 }
 
