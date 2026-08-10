@@ -12,6 +12,7 @@ export function createContentCacheKey(request: StructureContentRequest): string 
     requestedFormat: request.requestedFormat,
     preserveCopy: request.preserveCopy,
     maxSlides: request.maxSlides,
+    provider: request.provider ?? "rules",
   })).digest("hex");
 }
 

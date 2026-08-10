@@ -1,6 +1,7 @@
 export type ContentType = "institutional" | "product" | "commercial" | "editorial" | "informational" | "commemorative" | "other";
 export type RequestedFormat = "auto" | "single" | "carousel";
 export type SlideRole = "cover" | "content" | "list" | "quote" | "image" | "cta";
+export type ContentProviderId = "rules" | "local" | "openai";
 
 export interface StructuredSlide {
   id: string;
@@ -23,6 +24,8 @@ export interface StructuredPost {
   slides: StructuredSlide[];
   imageQueries?: string[];
   templateTags?: string[];
+  contentOverflow?: boolean;
+  overflowReason?: string;
 }
 
 export interface StructureContentRequest {
@@ -32,4 +35,12 @@ export interface StructureContentRequest {
   outputs: ("feed" | "story")[];
   maxSlides: number;
   preserveCopy: boolean;
+  provider?: ContentProviderId;
+}
+
+export interface StructureContentResult {
+  post: StructuredPost;
+  provider: ContentProviderId;
+  providerUsed: ContentProviderId;
+  cached: boolean;
 }

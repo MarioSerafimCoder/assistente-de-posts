@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { History, Palette, Plus } from "lucide-react";
+import { BrainCircuit, History, Palette, Plus } from "lucide-react";
 
 export function AppHeader() {
   return <header className="h-16 shrink-0 border-b border-white/10 bg-[#111311] px-6 flex items-center justify-between">
@@ -11,6 +11,7 @@ export function AppHeader() {
       <Link className="app-nav-link" href="/create"><Plus size={15}/>Criar</Link>
       <Link className="app-nav-link" href="/history"><History size={15}/>Histórico</Link>
       <Link className="app-nav-link" href="/settings/brands"><Palette size={15}/>Marcas</Link>
+      <Link className="app-nav-link" href="/settings/intelligence"><BrainCircuit size={15}/>Inteligência</Link>
     </nav>
   </header>;
 }

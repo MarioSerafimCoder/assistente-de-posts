@@ -1,4 +1,4 @@
-import type { StructuredPost, StructuredSlide } from "./content";
+import type { ContentProviderId, StructuredPost, StructuredSlide } from "./content";
 import type { LogoVariant } from "./brand";
 import type { SocialOutput, TemplateVariantName } from "./template";
 
@@ -21,6 +21,7 @@ export interface Generation {
   originalCopy: string;
   outputs: SocialOutput[];
   structuredPost: StructuredPost;
+  providerUsed?: ContentProviderId;
   slides: GenerationSlide[];
   createdAt: string;
   updatedAt: string;

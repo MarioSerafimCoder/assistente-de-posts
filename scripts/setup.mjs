@@ -10,7 +10,7 @@ try {
   await access(path.join(root, ".env.local"));
 } catch {
   await copyFile(path.join(root, ".env.example"), path.join(root, ".env.local"));
-  console.log(".env.local criado. Preencha OPENAI_API_KEY antes de gerar conteúdo.");
+  console.log(".env.local criado. Todas as integrações são opcionais.");
 }
 
 console.log("Estrutura local preparada. Execute npm run dev.");

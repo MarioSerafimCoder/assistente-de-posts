@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { z } from "zod";
 import { getBrand } from "@/brands";
-import { getOpenAIClient } from "@/lib/openai/client";
+import { getOptionalOpenAIClient } from "@/lib/content/providers/openai-provider";
 import { generateId } from "@/lib/utils";
 
 const requestSchema = z.object({ brandId: z.string(), subject: z.string().min(3).max(500), visualIntent: z.string().max(300).optional() });
@@ -12,9 +12,10 @@ export async function POST(request: Request) {
   if (!parsed.success) return Response.json({ error: "Descreva a imagem desejada." }, { status: 400 });
   const brand = getBrand(parsed.data.brandId);
   if (!brand) return Response.json({ error: "Marca não encontrada." }, { status: 404 });
+  if (!process.env.OPENAI_IMAGE_MODEL) return Response.json({ error: "A geração de imagem com IA não está configurada." }, { status: 503 });
   try {
     const prompt = `Fotografia vertical sem texto, sem logotipo e sem identidade gráfica aplicada. Assunto: ${parsed.data.subject}. Intenção visual: ${parsed.data.visualIntent ?? "editorial"}. Preferir: ${brand.imageStyle?.preferred.join(", ")}. Evitar: ${brand.imageStyle?.avoid.join(", ")}.`;
-    const response = await getOpenAIClient().images.generate({ model: process.env.OPENAI_IMAGE_MODEL || "gpt-image-2", prompt, size: "1024x1536", response_format: "b64_json" });
+    const response = await getOptionalOpenAIClient().images.generate({ model: process.env.OPENAI_IMAGE_MODEL, prompt, size: "1024x1536", response_format: "b64_json" });
     const base64 = response.data?.[0]?.b64_json;
     if (!base64) throw new Error("NO_IMAGE_DATA");
     const id = generateId();

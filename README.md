@@ -1,122 +1,91 @@
 # Assistente de Posts
 
-Aplicação local-first e multimarca para transformar uma copy em post único ou carrossel, adaptar a mesma estrutura para Feed 4:5 e Stories 9:16, visualizar, ajustar e exportar PNG/ZIP.
+Aplicação local-first e multimarca para transformar uma copy em post único ou carrossel, adaptar o conteúdo para Feed 4:5 e Stories 9:16, editar e exportar PNG/ZIP.
 
-O projeto usa templates determinísticos para preservar a identidade. A OpenAI interpreta e hierarquiza o conteúdo; ela não gera HTML/CSS nem inventa a direção de arte.
+> **A aplicação não exige API de IA.** O fluxo principal funciona offline, sem chave, créditos, LM Studio, Ollama, Pexels ou qualquer serviço externo.
 
 Baseado no projeto MIT [Open Carrusel](https://github.com/Hainrixz/open-carrusel), de Enrique Rocha / tododeia. A licença e os créditos do upstream permanecem preservados em `LICENSE` e no histórico Git.
 
 ## Funcionalidades
 
-- OpenAI Responses API com Structured Outputs e Zod.
-- Uma chamada de conteúdo por geração; Feed e Stories reutilizam o mesmo resultado.
-- Cache determinístico por marca, copy, formato, modo de preservação e limite de slides.
-- Brand Kits nativos, regras de logo, fontes locais e biblioteca de assets.
-- Seis templates demonstrativos por marca, com composições Feed e Story.
-- Preview seguro em iframe usando o mesmo renderer lógico da exportação.
-- Edição de headline, subheadline, body, CTA, template, variante, logo e imagem.
-- Filmstrip com duplicação, exclusão e drag-and-drop.
-- Upload PNG/JPG/WebP com validação, Sharp e remoção de metadados.
-- Busca opcional no Pexels e geração opcional com `gpt-image-2`.
-- Exportação via Chromium/Puppeteer em 1080×1350 e 1080×1920.
-- Histórico local e Brand Manager.
+- Rule Engine determinístico e offline como motor padrão.
+- Providers opcionais para LM Studio/OpenAI-compatible e OpenAI.
+- Post único, carrossel e escolha automática baseada em estrutura.
+- Brand Kits, templates aprovados e limites reais de texto.
+- Feed 1080×1350 e Stories 1080×1920 a partir do mesmo `StructuredPost`.
+- Preview, filmstrip, edição, upload e biblioteca local de imagens.
+- Busca opcional no Pexels e geração opcional de imagem com OpenAI.
+- Exportação PNG/ZIP via Chromium/Puppeteer e histórico local.
 
-## Executar neste computador sem administrador
+## Funcionamento offline
 
-Dê dois cliques em:
+Sem nenhuma variável configurada:
 
-```text
-INICIAR_ASSISTENTE.bat
-```
+- posts únicos funcionam;
+- carrosséis funcionam;
+- Feed e Stories funcionam;
+- upload e Brand Kits funcionam;
+- preview, edição e histórico funcionam;
+- exportação PNG/ZIP funciona.
 
-O atalho usa o Node.js portátil já presente no perfil do usuário. Não instala componentes globais, não altera o Windows e não pede elevação de privilégios.
+No modo **Sem IA**, a copy é processada localmente e não é enviada a OpenAI, analytics, telemetria, Pexels ou qualquer serviço remoto. O Pexels só é consultado quando o usuário pesquisa imagens e possui uma chave configurada.
 
-Para reinstalar dependências locais, use:
+## Executar sem administrador
 
-```text
-INSTALAR_LOCAL.bat
-```
+Dê dois cliques em `INICIAR_ASSISTENTE.bat`. Para reinstalar dependências locais, use `INSTALAR_LOCAL.bat`. Os atalhos usam o runtime disponível no perfil do usuário e não exigem elevação de privilégio.
 
-## Execução padrão
-
-Em uma máquina que já tenha Node.js 20 ou superior:
+Em uma máquina com Node.js 20 ou superior:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abra `http://localhost:3000/create`.
+Abra `http://localhost:3000/create`. Não é necessário criar `.env.local` para gerar posts.
 
-## Ambiente
+## Integrações opcionais
 
-Copie `.env.example` para `.env.local` e preencha somente os segredos locais:
+Copie `.env.example` para `.env.local` somente se desejar ativar integrações:
 
 ```env
+LOCAL_AI_ENABLED=false
+LOCAL_AI_BASE_URL=http://127.0.0.1:1234/v1
+LOCAL_AI_MODEL=
+
 OPENAI_API_KEY=
 OPENAI_MODEL=gpt-5.6-terra
 OPENAI_REASONING_EFFORT=low
-OPENAI_IMAGE_MODEL=gpt-image-2
+OPENAI_IMAGE_MODEL=
+
 PEXELS_API_KEY=
 ```
 
-`.env.local` é ignorado pelo Git. A chave da OpenAI é lida apenas em módulos server-side e nunca é enviada ao browser.
-
-Pexels é opcional. Quando `PEXELS_API_KEY` está vazio, a aplicação continua funcionando e usa upload/biblioteca local.
+A preferência do motor fica no navegador em **Configurações → Inteligência**. Nenhum provider pago é selecionado automaticamente. Consulte [Content Engine](docs/CONTENT_ENGINE.md) e [IA local](docs/LOCAL_AI.md).
 
 ## Arquitetura
 
 ```text
 Copy
-  → OpenAI Responses API
-  → StructuredPost validado
   → Content Engine
+      → Rule Engine [padrão, offline]
+      → Local AI [opcional]
+      → OpenAI [opcional]
+  → StructuredPost validado com Zod
   → Brand Engine
   → Template Engine
   → Visual Engine
-  → HTML/CSS confiável
-  → iframe de preview / Puppeteer
+  → HTML/CSS
+  → preview / Puppeteer
   → PNG / ZIP
 ```
 
 Dados gerados ficam em `data/` e uploads em `public/uploads/`. Ambos são locais e ignorados pelo Git.
 
-## Brand Kits
+## Brand Kits e templates
 
-Configuração:
+As marcas ficam em `src/brands/<slug>/brand.config.ts` e seus assets em `public/brands/<slug>/`. Consulte [docs/ADDING_A_BRAND.md](docs/ADDING_A_BRAND.md).
 
-```text
-src/brands/<slug>/brand.config.ts
-```
-
-Assets reais:
-
-```text
-public/brands/<slug>/
-  logos/
-  fonts/
-  elements/
-  textures/
-  patterns/
-  icons/
-  images/
-```
-
-Os assets atuais são placeholders explicitamente identificados. Para cadastrar uma marca, consulte [docs/ADDING_A_BRAND.md](docs/ADDING_A_BRAND.md).
-
-## Templates
-
-O registry fica em `src/templates/registry.ts`. As definições demonstrativas estão em `src/templates/granistone/definitions.ts` e são aplicadas às marcas de exemplo.
-
-Cada template declara papéis de slide, tags, limites de texto e variantes separadas de Feed e Story. Consulte [docs/ADDING_A_TEMPLATE.md](docs/ADDING_A_TEMPLATE.md).
-
-## Exportação
-
-- Feed: 1080×1350 (`4:5`).
-- Stories: 1080×1920 (`9:16`).
-- Um único arquivo retorna PNG.
-- Múltiplos slides ou “Baixar tudo” retornam ZIP com pastas `feed/` e `stories/`.
-- A ordem acompanha o filmstrip.
+O registry de templates fica em `src/templates/registry.ts`. Cada template declara papéis de slide, tags, limites de texto e variantes Feed/Story. Consulte [docs/ADDING_A_TEMPLATE.md](docs/ADDING_A_TEMPLATE.md).
 
 ## Qualidade
 
@@ -127,8 +96,8 @@ npm run build
 npm run test:export
 ```
 
-Os testes cobrem schema de marca, resolução de logo, ranking de templates, StructuredPost, cache key, nomes de arquivo, variantes Feed/Story, integração do renderer e dimensões reais de exportação.
+Os testes cobrem parsers e heurísticas locais, determinismo, fluxo sem APIs, schemas, engines, renderer e dimensões reais de exportação.
 
-## Licença e upstream
+## Licença
 
-MIT. Este fork preserva `LICENSE` e reconhece o Open Carrusel, tododeia e seu autor original. A integração funcional com Claude CLI foi removida; o fluxo principal usa exclusivamente o SDK oficial `openai` no servidor.
+MIT. Este fork preserva `LICENSE` e os créditos do Open Carrusel.

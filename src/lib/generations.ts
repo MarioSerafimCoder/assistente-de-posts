@@ -1,7 +1,7 @@
 import { readDataSafe, writeData } from "./data";
 import { generateId, now } from "./utils";
 import { rankTemplates } from "./template-engine";
-import type { StructuredPost } from "@/types/content";
+import type { ContentProviderId, StructuredPost } from "@/types/content";
 import type { Generation, GenerationsData, GenerationSlide } from "@/types/generation";
 import type { SocialOutput } from "@/types/template";
 
@@ -19,7 +19,7 @@ export async function getGeneration(id: string): Promise<Generation | null> {
   return data.generations.find((generation) => generation.id === id) ?? null;
 }
 
-export async function createGeneration(input: { brandId: string; post: StructuredPost; outputs: SocialOutput[] }): Promise<Generation> {
+export async function createGeneration(input: { brandId: string; post: StructuredPost; outputs: SocialOutput[]; providerUsed?: ContentProviderId }): Promise<Generation> {
   const data = await load();
   const slides: GenerationSlide[] = input.post.slides.map((content, order) => {
     const ranked = rankTemplates({ brandId: input.brandId, post: input.post, slide: content });
@@ -34,7 +34,7 @@ export async function createGeneration(input: { brandId: string; post: Structure
   const generation: Generation = {
     id: generateId(), name: input.post.title || input.post.slides[0]?.headline || "Nova criação",
     brandId: input.brandId, originalCopy: input.post.originalCopy, outputs: input.outputs,
-    structuredPost: input.post, slides, createdAt: now(), updatedAt: now(),
+    structuredPost: input.post, providerUsed: input.providerUsed ?? "rules", slides, createdAt: now(), updatedAt: now(),
   };
   data.generations.push(generation);
   await save(data);

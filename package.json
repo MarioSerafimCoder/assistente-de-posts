@@ -1,7 +1,7 @@
 {
   "name": "assistente-de-posts",
   "version": "1.0.0",
-  "description": "Assistente multimarca local para criar posts e carrosseis com OpenAI, templates aprovados e exportacao PNG.",
+  "description": "Assistente multimarca offline para criar posts e carrosseis com templates aprovados e exportacao PNG.",
   "license": "MIT",
   "private": true,
   "engines": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Hainrixz/open-carrusel"
+    "url": "https://github.com/MarioSerafimCoder/assistente-de-posts"
   },
   "scripts": {
     "setup": "node scripts/setup.mjs",

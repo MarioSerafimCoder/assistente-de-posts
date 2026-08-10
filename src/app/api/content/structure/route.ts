@@ -1,4 +1,3 @@
-// Alias temporário para clientes antigos. Novos fluxos usam /api/content/structure.
 import { handleStructureContentRequest } from "@/lib/content/http";
 
 export const runtime = "nodejs";
