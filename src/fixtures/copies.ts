@@ -1,0 +1,2 @@
+export const simpleCopy = "O extraordinário nasce da matéria.\n\nSuperfícies criadas para projetos que buscam personalidade, sofisticação e permanência.";
+export const carouselCopy = "Projetos autorais começam pela escolha dos materiais.\n\nA textura influencia a percepção do ambiente.\nA cor interfere na sensação de amplitude.\nO acabamento muda a relação entre luz e superfície.\nA aplicação correta conecta estética e funcionalidade.\n\nConheça possibilidades para seu próximo projeto.";

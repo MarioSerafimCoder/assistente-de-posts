@@ -30,11 +30,11 @@ async function getBrowser(): Promise<Browser> {
 
 /**
  * Inline all image references in slide HTML.
- * Replaces /uploads/xxx.png paths with data: URIs.
+ * Replaces local public image paths with data: URIs.
  */
 async function inlineImages(html: string): Promise<string> {
   const uploadDir = path.resolve(process.cwd(), "public");
-  const imgRegex = /(?:src=["']|url\(["']?)(\/uploads\/[^"'\s)]+)/g;
+  const imgRegex = /(?:src=["']|url\(["']?)(\/(?:uploads|brands)\/[^"'\s)]+)/g;
   const matches = [...html.matchAll(imgRegex)];
 
   let result = html;
@@ -49,7 +49,7 @@ async function inlineImages(html: string): Promise<string> {
           ? "image/png"
           : ext === ".jpg" || ext === ".jpeg"
             ? "image/jpeg"
-            : "image/webp";
+            : ext === ".svg" ? "image/svg+xml" : "image/webp";
       const base64 = buffer.toString("base64");
       result = result.replace(imgPath, `data:${mime};base64,${base64}`);
     } catch {

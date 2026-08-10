@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
-  --foreground: #171717;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --border: #e5e5e5;
-  --ring: #1a1a2e;
-  --accent: #e94560;
-  --accent-foreground: #ffffff;
-  --surface: #ffffff;
+  --background: #151815;
+  --foreground: #f5f4ef;
+  --muted: #222622;
+  --muted-foreground: #9b9e99;
+  --border: #333833;
+  --ring: #d7c7a7;
+  --accent: #d7c7a7;
+  --accent-foreground: #171a18;
+  --surface: #1a1e1a;
   --destructive: #ef4444;
 
   /* Motion — Emil Kowalski easings (animations.dev) */
@@ -29,14 +29,51 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-surface: var(--surface);
   --color-destructive: var(--destructive);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: Consolas, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button, input, textarea, select { font: inherit; }
+button, a { transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, opacity 160ms ease; }
+
+.app-nav-link { display:inline-flex; align-items:center; gap:.45rem; padding:.5rem .7rem; border-radius:.5rem; color:rgba(255,255,255,.55); }
+.app-nav-link:hover { color:white; background:rgba(255,255,255,.06); }
+.app-kicker { color:#d7c7a7; text-transform:uppercase; letter-spacing:.22em; font-size:.68rem; font-weight:700; }
+.app-panel { border:1px solid rgba(255,255,255,.1); border-radius:1rem; background:rgba(255,255,255,.035); padding:1.5rem; box-shadow:0 24px 80px rgba(0,0,0,.12); }
+.app-label { display:block; color:rgba(255,255,255,.55); text-transform:uppercase; letter-spacing:.14em; font-size:.68rem; font-weight:700; }
+.app-field, .editor-field { width:100%; border:1px solid rgba(255,255,255,.12); border-radius:.6rem; background:rgba(0,0,0,.18); color:white; padding:.75rem .85rem; outline:none; }
+.app-field:focus, .editor-field:focus { border-color:rgba(215,199,167,.65); box-shadow:0 0 0 3px rgba(215,199,167,.08); }
+.app-field option, .editor-field option, select option { color:#171a18; background:#f5f4ef; }
+.app-segment { display:grid; grid-auto-flow:column; grid-auto-columns:1fr; border:1px solid rgba(255,255,255,.1); background:rgba(0,0,0,.16); padding:.25rem; border-radius:.65rem; }
+.app-segment button { border-radius:.45rem; padding:.65rem .8rem; color:rgba(255,255,255,.45); font-size:.76rem; cursor:pointer; }
+.app-segment button.active { background:rgba(255,255,255,.1); color:white; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+.app-segment.compact button { padding:.42rem .65rem; }
+.app-check { display:flex; flex:1; align-items:center; gap:.55rem; min-height:43px; padding:0 .75rem; border:1px solid rgba(255,255,255,.1); border-radius:.6rem; color:rgba(255,255,255,.55); font-size:.78rem; cursor:pointer; }
+.app-check > span { display:grid; place-items:center; width:17px; height:17px; border:1px solid rgba(255,255,255,.2); border-radius:.25rem; }
+.app-check.active { border-color:rgba(215,199,167,.45); background:rgba(215,199,167,.08); color:white; }
+.app-check.active > span { background:#d7c7a7; color:#171a18; border-color:#d7c7a7; }
+.app-switch { position:relative; display:inline-block; width:42px; height:24px; border-radius:20px; background:rgba(255,255,255,.12); }
+.app-switch span { position:absolute; width:18px; height:18px; border-radius:50%; background:white; left:3px; top:3px; transition:transform 180ms ease; }
+.app-switch.on { background:#d7c7a7; }.app-switch.on span { transform:translateX(18px); background:#171a18; }
+.app-primary-button { min-height:48px; border-radius:.65rem; background:#d7c7a7; color:#171a18; display:inline-flex; align-items:center; justify-content:center; gap:.65rem; padding:.75rem 1rem; font-size:.86rem; font-weight:700; cursor:pointer; }
+.app-primary-button:hover { background:#e5d8bd; }.app-primary-button:disabled { cursor:not-allowed; opacity:.38; }.app-primary-button.compact { min-height:36px; padding:.45rem .8rem; font-size:.75rem; }
+.editor-section-title { color:rgba(255,255,255,.38); text-transform:uppercase; letter-spacing:.16em; font-size:.63rem; font-weight:700; }
+.editor-label { display:block; margin-top:.65rem; color:rgba(255,255,255,.42); font-size:.68rem; }
+.editor-label .editor-field { margin-top:.3rem; color:white; font-size:.78rem; padding:.6rem .65rem; text-transform:none; letter-spacing:0; }
+.editor-action { min-height:36px; display:inline-flex; align-items:center; justify-content:center; gap:.45rem; border:1px solid rgba(255,255,255,.11); border-radius:.5rem; background:rgba(255,255,255,.045); color:rgba(255,255,255,.72); padding:.45rem .7rem; font-size:.72rem; cursor:pointer; }
+.editor-action:hover, .editor-icon:hover { border-color:rgba(215,199,167,.4); background:rgba(215,199,167,.08); color:white; }
+.editor-action:disabled { opacity:.4; cursor:not-allowed; }
+.editor-icon { width:36px; height:36px; display:inline-grid; place-items:center; border:1px solid rgba(255,255,255,.1); border-radius:.5rem; color:rgba(255,255,255,.55); cursor:pointer; }
+
+@media (max-width: 720px) {
+  .app-nav-link { font-size:0; padding:.55rem; }.app-nav-link svg { width:18px; height:18px; }
+  .app-panel { padding:1rem; }
 }
 
 /* Scrollbar styling */

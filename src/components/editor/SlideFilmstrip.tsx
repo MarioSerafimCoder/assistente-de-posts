@@ -230,7 +230,7 @@ export function SlideFilmstrip({
           </div>
         )}
 
-        {slides.length < MAX_SLIDES && !isGenerating && (
+        {slides.length < MAX_SLIDES && !isGenerating && onAddSlideRequest && (
           <button
             onClick={onAddSlideRequest}
             className="shrink-0 rounded-lg border-2 border-dashed border-border flex items-center justify-center hover:border-muted-foreground/50 hover:bg-muted/50 transition-colors cursor-pointer"

@@ -11,7 +11,7 @@ export interface Slide {
 export interface ReferenceImage {
   id: string;
   url: string;       // e.g. "/uploads/abc.png"
-  absPath: string;    // absolute path for Claude to Read
+  absPath: string;    // absolute path used by local server-side tools
   name: string;       // original filename or description
   addedAt: string;
 }
