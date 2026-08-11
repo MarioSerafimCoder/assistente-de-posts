@@ -59,6 +59,8 @@ describe("aparência da Verti · Opção 01", () => {
     expect(feedHtml).not.toContain("verti-marker");
     expect(feedHtml).not.toContain("↗");
     expect(feedHtml).toMatch(/\.verti-callout\{[^}]*font-weight:400/);
+    expect(feedHtml).toMatch(/\.verti-callout\{[^}]*line-height:1\.35/);
+    expect(feedHtml).toMatch(/\.verti-callout-text\{[^}]*text-align:right/);
     expect(storyHtml).toMatch(/\.verti-headline\{[^}]*font-size:80px/);
 
     const [feed, story] = await Promise.all([
