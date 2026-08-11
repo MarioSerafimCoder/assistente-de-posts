@@ -62,6 +62,7 @@ describe("aparência da Verti · Opção 01", () => {
     expect(feedHtml).toMatch(/\.verti-callout\{[^}]*line-height:1\.35/);
     expect(feedHtml).toMatch(/\.verti-callout-text\{[^}]*text-align:left/);
     expect(storyHtml).toMatch(/\.verti-headline\{[^}]*font-size:80px/);
+    expect(storyHtml).toMatch(/\.verti-headline\{[^}]*top:238px/);
 
     const [feed, story] = await Promise.all([
       exportSlide({ id: "verti-visual-feed", order: 0, notes: "", previousVersions: [], html: feedHtml }, "4:5"),
