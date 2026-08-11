@@ -28,5 +28,8 @@ describe("Structured content → template → render", () => {
     expect(feed).toContain("option-01-feed.png");
     expect(story).toContain("option-01-story.png");
     expect(feed).toContain("verti-white.png");
+    expect(feed).toContain("Mont-Heavy.woff2");
+    expect(feed).toContain("Mont-ExtraLight.woff2");
+    expect(feed).not.toContain("verti-marker");
   });
 });

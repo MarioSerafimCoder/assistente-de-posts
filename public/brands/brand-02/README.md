@@ -2,11 +2,13 @@
 
 - `backgrounds/`: fundos prontos por formato e opção visual.
 - `elements/`: linhas, molduras e elementos gráficos da identidade.
-- `fonts/`: fontes locais usadas pelos templates.
+- `fonts/mont/`: família Mont original e suas variações; o aplicativo usa os arquivos WOFF2.
 - `icons/`: ícones oficiais da marca.
 - `images/`: fotografias e placeholders da biblioteca local.
 - `logos/`: variações oficiais do logotipo.
 - `patterns/`: padrões repetíveis.
 - `textures/`: texturas adicionais.
 
-Os arquivos Mont atuais são versões DEMO fornecidas com o material recebido. Antes do uso comercial, confirme a licença e substitua-os pelas versões oficiais licenciadas mantendo os caminhos ou atualizando `src/brands/brand-02/brand.config.ts`.
+O template Opção 01 usa Mont Heavy nos títulos e Mont ExtraLight/Regular nos textos de apoio.
+
+Execute `pnpm test:visual` para comparar os PNGs renderizados com as imagens-base aprovadas em `docs/previews/`.

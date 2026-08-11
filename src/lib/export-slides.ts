@@ -29,13 +29,13 @@ async function getBrowser(): Promise<Browser> {
 }
 
 /**
- * Inline all image references in slide HTML.
- * Replaces local public image paths with data: URIs.
+ * Inline all local brand/upload references in slide HTML.
+ * Replaces images and fonts from public/ with data: URIs.
  */
-async function inlineImages(html: string): Promise<string> {
+async function inlineLocalAssets(html: string): Promise<string> {
   const uploadDir = path.resolve(process.cwd(), "public");
-  const imgRegex = /(?:src=["']|url\(["']?)(\/(?:uploads|brands)\/[^"'\s)]+)/g;
-  const matches = [...html.matchAll(imgRegex)];
+  const assetRegex = /(?:src=["']|url\(["']?)(\/(?:uploads|brands)\/[^"'\s)]+)/g;
+  const matches = [...html.matchAll(assetRegex)];
 
   let result = html;
   for (const match of matches) {
@@ -44,12 +44,14 @@ async function inlineImages(html: string): Promise<string> {
       const fullPath = path.join(uploadDir, imgPath);
       const buffer = await readFile(fullPath);
       const ext = path.extname(imgPath).toLowerCase();
-      const mime =
-        ext === ".png"
-          ? "image/png"
-          : ext === ".jpg" || ext === ".jpeg"
-            ? "image/jpeg"
-            : ext === ".svg" ? "image/svg+xml" : "image/webp";
+      const mime = ext === ".png" ? "image/png"
+        : ext === ".jpg" || ext === ".jpeg" ? "image/jpeg"
+        : ext === ".svg" ? "image/svg+xml"
+        : ext === ".woff2" ? "font/woff2"
+        : ext === ".woff" ? "font/woff"
+        : ext === ".ttf" ? "font/ttf"
+        : ext === ".otf" ? "font/otf"
+        : "application/octet-stream";
       const base64 = buffer.toString("base64");
       result = result.replace(imgPath, `data:${mime};base64,${base64}`);
     } catch {
@@ -73,8 +75,8 @@ export async function exportSlide(
   const fontFamilies = extractFontFamilies(slide.html);
   const inlinedFontCss = await getInlinedFontCSS(fontFamilies);
 
-  // Inline images
-  const inlinedHtml = await inlineImages(slide.html);
+  // Inline local images and fonts
+  const inlinedHtml = await inlineLocalAssets(slide.html);
 
   // Build self-contained HTML
   const fullHtml = wrapSlideHtml(inlinedHtml, aspectRatio, {

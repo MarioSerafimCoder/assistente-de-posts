@@ -1,5 +1,10 @@
 import type { BrandDefinition } from "@/types/brand";
 
+const montExtraLight = { path: "/brands/brand-02/fonts/mont/Mont-ExtraLight.woff2", weight: 200 };
+const montRegular = { path: "/brands/brand-02/fonts/mont/Mont-Regular.woff2", weight: 400 };
+const montSemiBold = { path: "/brands/brand-02/fonts/mont/Mont-SemiBold.woff2", weight: 600 };
+const montHeavy = { path: "/brands/brand-02/fonts/mont/Mont-Heavy.woff2", weight: 800 };
+
 export const brand02: BrandDefinition = {
   id: "brand-02",
   slug: "brand-02",
@@ -21,10 +26,10 @@ export const brand02: BrandDefinition = {
     horizontal: { id: "verti-logo-horizontal", name: "Verti horizontal branca", path: "/brands/brand-02/logos/verti-white.png" },
   },
   typography: {
-    headline: { family: "Arial", fallback: "sans-serif", weights: [700, 800] },
-    subheadline: { family: "Arial", fallback: "sans-serif", weights: [400, 700] },
-    body: { family: "Arial", fallback: "sans-serif", weights: [400, 700] },
-    cta: { family: "Arial", fallback: "sans-serif", weights: [700, 800] },
+    headline: { family: "Mont", fallback: "Arial, sans-serif", weights: [800], localSources: [montHeavy] },
+    subheadline: { family: "Mont", fallback: "Arial, sans-serif", weights: [400, 600], localSources: [montRegular, montSemiBold] },
+    body: { family: "Mont", fallback: "Arial, sans-serif", weights: [200, 400], localSources: [montExtraLight, montRegular] },
+    cta: { family: "Mont", fallback: "Arial, sans-serif", weights: [600, 800], localSources: [montSemiBold, montHeavy] },
   },
   assets: [
     { id: "verti-bg-option-01-feed", name: "Fundo Opção 01 Feed", type: "background", path: "/brands/brand-02/backgrounds/option-01-feed.png", contexts: ["feed", "option-01"], preferredPositions: ["background"] },

@@ -23,8 +23,18 @@ export function resolveLogoVariant({
 }
 
 export function getBrandFontFaceCss(brand: BrandDefinition): string {
-  const definitions = [brand.typography.headline, brand.typography.body, brand.typography.cta].filter(Boolean);
-  return definitions.flatMap((definition) => definition?.localSources?.map((source) =>
-    `@font-face{font-family:'${definition.family}';src:url('${source.path}') format('${source.path.endsWith(".woff2") ? "woff2" : source.path.endsWith(".otf") ? "opentype" : "truetype"}');font-weight:${source.weight};font-style:${source.style ?? "normal"};font-display:swap;}`
-  ) ?? []).join("");
+  const definitions = [brand.typography.headline, brand.typography.subheadline, brand.typography.body, brand.typography.cta];
+  const declarations = new Map<string, string>();
+
+  for (const definition of definitions) {
+    if (!definition) continue;
+    for (const source of definition.localSources ?? []) {
+      const style = source.style ?? "normal";
+      const key = `${definition.family}:${source.path}:${source.weight}:${style}`;
+      const format = source.path.endsWith(".woff2") ? "woff2" : source.path.endsWith(".woff") ? "woff" : source.path.endsWith(".otf") ? "opentype" : "truetype";
+      declarations.set(key, `@font-face{font-family:'${definition.family}';src:url('${source.path}') format('${format}');font-weight:${source.weight};font-style:${style};font-display:block;}`);
+    }
+  }
+
+  return [...declarations.values()].join("");
 }
