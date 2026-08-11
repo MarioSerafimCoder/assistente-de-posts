@@ -58,6 +58,8 @@ describe("aparência da Verti · Opção 01", () => {
     expect(feedHtml).toContain("Mont-ExtraLight.woff2");
     expect(feedHtml).not.toContain("verti-marker");
     expect(feedHtml).not.toContain("↗");
+    expect(feedHtml).toMatch(/\.verti-callout\{[^}]*font-weight:400/);
+    expect(storyHtml).toMatch(/\.verti-headline\{[^}]*font-size:80px/);
 
     const [feed, story] = await Promise.all([
       exportSlide({ id: "verti-visual-feed", order: 0, notes: "", previousVersions: [], html: feedHtml }, "4:5"),

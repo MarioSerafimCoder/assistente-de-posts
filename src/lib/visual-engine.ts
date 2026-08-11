@@ -44,6 +44,9 @@ function renderVertiOption01({ brand, slide, output, template, variant }: {
   const photo = slide.imageUrl ?? brand.images[0]?.path;
   const headline = vertiHeadlineParts(slide.content.headline);
   const headlineFit = fitTextToTemplate(slide.content.headline, template.textLimits.headline);
+  const headlineFontSize = output === "story"
+    ? Math.min(90, Math.max(78, headlineFit.fontSize + 8))
+    : Math.max(62, headlineFit.fontSize);
   const bodyFit = fitTextToTemplate(slide.content.body, template.textLimits.body);
   const support = [slide.content.subheadline, slide.content.body].filter(Boolean).join(" ");
 
@@ -52,10 +55,10 @@ ${getBrandFontFaceCss(brand)}
 .verti-slide{position:relative;width:${dimension.width}px;height:${dimension.height}px;overflow:hidden;background:${brand.colors.primary} url('${escapeHtml(background)}') center/cover no-repeat;color:${brand.colors.light};font-family:'${brand.typography.body.family}',${brand.typography.body.fallback};}
 .verti-accent-line{position:absolute;z-index:2;left:${output === "feed" ? 78 : 92}px;top:${output === "feed" ? 76 : 112}px;width:${output === "feed" ? 520 : 560}px;height:auto;}
 .verti-outline{position:absolute;z-index:1;width:${output === "feed" ? 720 : 760}px;height:auto;right:${output === "feed" ? -165 : -275}px;${output === "feed" ? "bottom:74px" : "top:-82px"};}
-.verti-headline{position:absolute;z-index:4;left:${output === "feed" ? 78 : 92}px;right:${output === "feed" ? 120 : 100}px;top:${output === "feed" ? 145 : 210}px;margin:0;font-family:'${brand.typography.headline.family}',${brand.typography.headline.fallback};font-size:${Math.max(output === "feed" ? 62 : 66, headlineFit.fontSize)}px;line-height:.96;letter-spacing:-.045em;font-weight:800;}
+.verti-headline{position:absolute;z-index:4;left:${output === "feed" ? 78 : 92}px;right:${output === "feed" ? 120 : 100}px;top:${output === "feed" ? 145 : 210}px;margin:0;font-family:'${brand.typography.headline.family}',${brand.typography.headline.fallback};font-size:${headlineFontSize}px;line-height:.96;letter-spacing:-.045em;font-weight:800;}
 .verti-headline span,.verti-headline strong{display:block;}.verti-headline span{color:${brand.colors.light};}.verti-headline strong{color:${brand.colors.accent};font-weight:800;}
 .verti-photo{position:absolute;z-index:3;left:${output === "feed" ? 134 : 106}px;right:0;top:${output === "feed" ? 430 : 650}px;height:${output === "feed" ? 520 : 790}px;background:${brand.colors.surface} url('${escapeHtml(photo)}') ${slide.imagePosition.x}% ${slide.imagePosition.y}%/cover no-repeat;box-shadow:0 2px 0 rgba(255,255,255,.12);}
-.verti-callout{position:absolute;z-index:5;left:${output === "feed" ? 78 : 68}px;top:${output === "feed" ? 858 : 1364}px;width:${output === "feed" ? 565 : 650}px;min-height:${output === "feed" ? 104 : 118}px;box-sizing:border-box;border-radius:24px;background:${brand.colors.light};color:${brand.colors.primary};display:flex;align-items:center;padding:${output === "feed" ? "20px 22px" : "22px 26px"};font-size:${Math.max(18, Math.min(output === "feed" ? 25 : 27, bodyFit.fontSize))}px;line-height:1.15;font-weight:200;box-shadow:0 8px 30px rgba(0,0,0,.12);}
+.verti-callout{position:absolute;z-index:5;left:${output === "feed" ? 78 : 68}px;top:${output === "feed" ? 858 : 1364}px;width:${output === "feed" ? 565 : 650}px;min-height:${output === "feed" ? 104 : 118}px;box-sizing:border-box;border-radius:24px;background:${brand.colors.light};color:${brand.colors.primary};display:flex;align-items:center;padding:${output === "feed" ? "20px 22px" : "22px 26px"};font-size:${Math.max(18, Math.min(output === "feed" ? 25 : 27, bodyFit.fontSize))}px;line-height:1.15;font-weight:400;box-shadow:0 8px 30px rgba(0,0,0,.12);}
 .verti-callout-text{flex:1}
 .verti-logo{position:absolute;z-index:4;left:${output === "feed" ? 78 : 92}px;bottom:${output === "feed" ? 102 : 170}px;width:${output === "feed" ? 245 : 285}px;height:${output === "feed" ? 96 : 112}px;object-fit:contain;object-position:left center;}
 .verti-overflow{position:absolute;z-index:7;right:25px;bottom:25px;padding:8px 12px;border-radius:8px;background:#fff;color:#8a2d1d;font:700 16px Arial,sans-serif;}
