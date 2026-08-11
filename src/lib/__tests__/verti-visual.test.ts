@@ -61,7 +61,7 @@ describe("aparência da Verti · Opção 01", () => {
     expect(feedHtml).toMatch(/\.verti-callout\{[^}]*font-weight:400/);
     expect(feedHtml).toMatch(/\.verti-callout\{[^}]*line-height:1\.35/);
     expect(feedHtml).toMatch(/\.verti-callout-text\{[^}]*text-align:left/);
-    expect(feedHtml).toMatch(/\.verti-outline\{[^}]*bottom:24px/);
+    expect(feedHtml).toMatch(/\.verti-outline\{[^}]*bottom:-310px/);
     expect(storyHtml).toMatch(/\.verti-headline\{[^}]*font-size:80px/);
     expect(storyHtml).toMatch(/\.verti-headline\{[^}]*top:238px/);
 
